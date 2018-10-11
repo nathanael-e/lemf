@@ -34,7 +34,7 @@ GTEST_SRC_PATH := test/tester.cpp
 #Libraries.
 #-lboost_thread
 #-lboost_atomic
-TARGETLIB = -lpthread
+TARGETLIB = -lpthread -lssl -lcrypto
 GTEST := -lgtest -lgtest_main -lpthread
 
 #Include the headers in every subdirectory.

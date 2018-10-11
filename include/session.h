@@ -12,6 +12,11 @@
 #include <vector>
 #include <sys/select.h>
 
+/* SSL Headers */
+
+#include <openssl/ssl.h>
+#include <openssl/err.h>
+
 class Session
 {
     public:
@@ -21,13 +26,16 @@ class Session
     
     private:
 
-        struct Connection
+        struct client_connection
         {
-           Connection(){}
-           Connection(int* _sock_):
-              sock(_sock_){}; 
-           int* sock;
+           client_connection(int sock, SSL* ssl);
+           int sock;
+           SSL* ssl;
         };
+
+        bool create_ssl_context();
+        bool configure_ssl_context();
+        bool new_connect(std::string ip);
 
         bool init();
         void run();
@@ -38,10 +46,12 @@ class Session
         struct sockaddr_in address;
         char buffer[4096];
 
-        std::vector<Connection> connections;
+        std::vector<client_connection> connections;
 
         fd_set readfds;
 
         std::thread session_thread; 
+
+        SSL_CTX* ctx;
 };
 #endif
