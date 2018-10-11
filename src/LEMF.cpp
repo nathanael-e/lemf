@@ -91,6 +91,10 @@ void LEMF::run()
             std::cout<<"Read error"<<std::endl;
         }
 
+        std::string peers = std::string(buffer);
+
+        Session s("10.10.10.8", "10.10.10.4");
+        s.start_session();
         close(new_socket);
     }
 }

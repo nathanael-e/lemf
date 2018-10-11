@@ -11,6 +11,7 @@
 #include <unistd.h>
 #include <vector>
 #include <sys/select.h>
+#include "session.h"
 
 #define BUFFER_SIZE 4096
 
