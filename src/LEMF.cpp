@@ -93,7 +93,7 @@ void LEMF::run()
 
         std::string peers = std::string(buffer);
 
-        Session s("10.10.10.8", "10.10.10.4");
+        Session s("10.20.1.10", "10.60.1.10");
         s.start_session();
         close(new_socket);
     }

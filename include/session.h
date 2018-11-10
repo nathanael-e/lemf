@@ -11,7 +11,7 @@
 #include <unistd.h>
 #include <vector>
 #include <sys/select.h>
-
+#include <string.h>
 /* SSL Headers */
 
 #include <openssl/ssl.h>

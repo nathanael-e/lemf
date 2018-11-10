@@ -123,15 +123,17 @@ void Session::run()
         return;
     }
 
+    sleep(2);
+
     if(!new_connect(user_1))
     {
         std::cout<<"Failed to establish connection to caller: "<<user_1<<std::endl;
     }
 
-//    if(!new_connect(user_2))
-//    {
-//        std::cout<<"Failed to establish connection to the called party: "<<user_2<<std::endl;
-//    }
+    if(!new_connect(user_2))
+    {
+        std::cout<<"Failed to establish connection to the called party: "<<user_2<<std::endl;   
+    }
       
     while(1)
     {
@@ -142,6 +144,8 @@ void Session::run()
         {
             if(connection.sock > 0)  
                 FD_SET(connection.sock, &readfds);
+
+            std::cout<<"Socket number is: "<<connection.sock<<std::endl;
             
             if(connection.sock > max_sd)
                 max_sd = connection.sock;
@@ -172,9 +176,12 @@ void Session::run()
                     else
                     {
                         std::cout<<buffer<<std::endl;
+                        memset(buffer, 0, sizeof buffer);
                     }
                     
                     SSL_free(connection.ssl);
+                    close(connection.sock);
+                    connection.ssl = NULL;
                     connection.sock = 0; 
                 }
             }
