@@ -123,8 +123,6 @@ void Session::run()
         return;
     }
 
-    sleep(2);
-
     if(!new_connect(user_1))
     {
         std::cout<<"Failed to establish connection to caller: "<<user_1<<std::endl;
