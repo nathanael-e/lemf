@@ -12,6 +12,8 @@
 #include <vector>
 #include <sys/select.h>
 #include "session.h"
+#include <sstream>
+#include<regex>
 
 #define BUFFER_SIZE 4096
 
@@ -25,6 +27,7 @@ class LEMF
     private:
         bool init();
         void run();
+        std::tuple<std::string, std::string> parse_ack(std::string ack);
 
         int server_socket, addrlen, new_socket,
             activity, sd, max_sd, on=1, valread;

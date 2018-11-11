@@ -67,6 +67,33 @@ bool LEMF::init()
     return true;
 }
 
+std::tuple<std::string, std::string> LEMF::parse_ack(std::string ack)
+{
+    static std::regex ipv4_address("\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}");
+    std::smatch match;
+
+    std::istringstream ack_stream(ack);
+    std::string line;
+    std::string caller = "";
+    std::string callee = "";
+    
+    while(std::getline(ack_stream, line))
+    { 
+       if(line.find("ACK") == 0)
+       {  
+           std::regex_search(line, match, ipv4_address);
+           callee = match[0];
+       }
+       else if(line.find("Call-ID") == 0)
+       {
+           std::regex_search(line, match, ipv4_address);
+           caller = match[0];
+       }
+    }
+
+    return std::make_tuple(caller, callee);
+}
+
 bool LEMF::start_server()
 {
     server_thread = std::thread(([this](){this->run();}));
@@ -91,9 +118,10 @@ void LEMF::run()
             std::cout<<"Read error"<<std::endl;
         }
 
-        std::string peers = std::string(buffer);
+        std::string sip_ack = std::string(buffer);
+        std::tuple<std::string, std::string> peers = parse_ack(sip_ack);
 
-        Session s("10.20.1.10", "10.60.1.10");
+        Session s(std::get<0>(peers), std::get<1>(peers));
         s.start_session();
         close(new_socket);
     }
