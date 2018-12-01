@@ -53,5 +53,6 @@ class Session
         std::thread session_thread; 
 
         SSL_CTX* ctx;
+        std::string ack = "ACK";
 };
 #endif

@@ -176,6 +176,8 @@ void Session::run()
                         std::cout<<buffer<<std::endl;
                         memset(buffer, 0, sizeof buffer);
                     }
+
+                    SSL_write(connection.ssl, ack.c_str(), ack.length());
                     
                     SSL_free(connection.ssl);
                     close(connection.sock);
